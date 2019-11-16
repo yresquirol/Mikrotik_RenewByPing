@@ -2,7 +2,7 @@
 
 # Donde dice wlan va el prefijo de las interfaces conectadas a etecsa
 # Pegar en el script desde aqui
-:local iPrefix "wlan"
+:local iPrefix "wlan";
 foreach iface in=[interface wireless registration-table find ap=yes and interface~"$iPrefix"] do {
     :local iName [interface wireless registration-table get value-name=interface [find .id=$iface]];
     if ([ping 10.180.0.30 count=3 interface=$iName]=0) do {
