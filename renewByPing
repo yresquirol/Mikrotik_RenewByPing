@@ -1,0 +1,16 @@
+# 1. Crear un script con el nombre "renewByPing" y poner el codigo de abajo
+
+# Donde dice wlan va el prefijo de las interfaces conectadas a etecsa
+# Pegar en el script desde aqui
+:local iPrefix "wlan"
+foreach iface in=[interface wireless registration-table find ap=yes and interface~"$iPrefix"] do {
+    :local iName [interface wireless registration-table get value-name=interface [find .id=$iface]];
+    if ([ping 10.180.0.30 count=3 interface=$iName]=0) do {
+        ip dhcp-client renew [find interface=$iName];
+        log warning "Renovando IP en interfaz $iName";
+    }
+}
+# Hasta aqui
+
+# 2. Crear un scheduler que se ejecute al inicio "startup" con el intervalo que deseen,
+# normalmente 2 minutos y escibir en "on event" el nombre del script
